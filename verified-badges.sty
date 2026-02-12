@@ -1,0 +1,45 @@
+% verified-badges.sty — Inline badges for formally verified theorems
+% https://github.com/YOURNAME/verified-badges
+%
+% Usage:
+%   \usepackage{verified-badges}
+%   \begin{theorem}[Confluence \leanproof{https://github.com/you/repo/Confluence.lean}]
+%
+% Each command takes one argument: the URL to the proof source.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{verified-badges}[2025/02/12 Inline badges for formally verified theorems]
+
+\RequirePackage{hyperref}
+\RequirePackage{graphicx}
+
+% ---------------------------------------------------------------
+% Badge height and vertical offset (tweak to taste)
+% ---------------------------------------------------------------
+\newlength{\badgeheight}
+\setlength{\badgeheight}{1.2em}
+
+\newlength{\badgeraise}
+\setlength{\badgeraise}{-2pt}
+
+% ---------------------------------------------------------------
+% Generic command: \verifiedproof[badge-file]{url}
+% ---------------------------------------------------------------
+\newcommand{\verifiedproof}[2][lean]{%
+  \href{#2}{\raisebox{\badgeraise}{\includegraphics[height=\badgeheight]{badges/#1}}}%
+}
+
+% ---------------------------------------------------------------
+% Prover-specific shorthands
+% ---------------------------------------------------------------
+\newcommand{\leanproof}[1]{\verifiedproof[lean]{#1}}
+\newcommand{\coqproof}[1]{\verifiedproof[coq]{#1}}
+\newcommand{\rocqproof}[1]{\verifiedproof[rocq]{#1}}
+\newcommand{\isabelleproof}[1]{\verifiedproof[isabelle]{#1}}
+\newcommand{\agdaproof}[1]{\verifiedproof[agda]{#1}}
+\newcommand{\holproof}[1]{\verifiedproof[hol4]{#1}}
+\newcommand{\dafnyproof}[1]{\verifiedproof[dafny]{#1}}
+\newcommand{\fstarproof}[1]{\verifiedproof[fstar]{#1}}
+\newcommand{\tlaproof}[1]{\verifiedproof[tla]{#1}}
+\newcommand{\idrisproof}[1]{\verifiedproof[idris]{#1}}
+\newcommand{\pvsproof}[1]{\verifiedproof[pvs]{#1}}

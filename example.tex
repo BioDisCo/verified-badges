@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{verified-badges}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\title{Example: Verified Badges}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Results}
+
+\begin{theorem}[Confluence \leanproof{https://github.com/example/proofs/blob/main/Confluence.lean}]
+  If $R$ is a terminating abstract reduction system satisfying the diamond
+  property, then $R$ is confluent.
+\end{theorem}
+
+\begin{lemma}[\coqproof{https://github.com/example/proofs/blob/main/Diamond.v}]
+  If $\to$ satisfies the diamond property, then $\twoheadrightarrow$
+  satisfies the Church-Rosser property.
+\end{lemma}
+
+\begin{proposition}[Normalization \isabelleproof{https://github.com/example/proofs/blob/main/Normalization.thy}]
+  Every well-typed term in System~F has a normal form.
+\end{proposition}
+
+\begin{theorem}
+  Not every result has been formally verified yet.
+\end{theorem}
+
+\end{document}
