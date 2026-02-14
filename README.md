@@ -1,19 +1,35 @@
 # verified-badges
 
-Inline badges for formally verified theorems in LaTeX papers. Each badge is a small shield with a checkmark, linking to the proof source.
+Inline badges for formally verified theorems in LaTeX papers. Each badge is a small shield with a checkmark, linking to the proof source. Two badge kinds are available:
+
+- **Verified** (green) — the full proof is formalized.
+- **Formalized** (blue) — the statement (definition, lemma, theorem, etc.) is formalized, but the proof is not (yet).
 
 <p align="center">
-  <img src="badges/lean.svg" height="32" alt="Lean">&nbsp;&nbsp;
-  <img src="badges/coq.svg" height="32" alt="Coq">&nbsp;&nbsp;
-  <img src="badges/rocq.svg" height="32" alt="Rocq">&nbsp;&nbsp;
-  <img src="badges/isabelle.svg" height="32" alt="Isabelle">&nbsp;&nbsp;
-  <img src="badges/agda.svg" height="32" alt="Agda">&nbsp;&nbsp;
-  <img src="badges/hol4.svg" height="32" alt="HOL4">&nbsp;&nbsp;
-  <img src="badges/dafny.svg" height="32" alt="Dafny">&nbsp;&nbsp;
-  <img src="badges/fstar.svg" height="32" alt="F*">&nbsp;&nbsp;
-  <img src="badges/tla.svg" height="32" alt="TLA+">&nbsp;&nbsp;
-  <img src="badges/idris.svg" height="32" alt="Idris">&nbsp;&nbsp;
-  <img src="badges/pvs.svg" height="32" alt="PVS">
+  <img src="badges/lean.svg" height="32" alt="Verified in Lean">&nbsp;&nbsp;
+  <img src="badges/coq.svg" height="32" alt="Verified in Coq">&nbsp;&nbsp;
+  <img src="badges/rocq.svg" height="32" alt="Verified in Rocq">&nbsp;&nbsp;
+  <img src="badges/isabelle.svg" height="32" alt="Verified in Isabelle">&nbsp;&nbsp;
+  <img src="badges/agda.svg" height="32" alt="Verified in Agda">&nbsp;&nbsp;
+  <img src="badges/hol4.svg" height="32" alt="Verified in HOL4">&nbsp;&nbsp;
+  <img src="badges/dafny.svg" height="32" alt="Verified in Dafny">&nbsp;&nbsp;
+  <img src="badges/fstar.svg" height="32" alt="Verified in F*">&nbsp;&nbsp;
+  <img src="badges/tla.svg" height="32" alt="Verified in TLA+">&nbsp;&nbsp;
+  <img src="badges/idris.svg" height="32" alt="Verified in Idris">&nbsp;&nbsp;
+  <img src="badges/pvs.svg" height="32" alt="Verified in PVS">
+</p>
+<p align="center">
+  <img src="badges/lean-formalized.svg" height="32" alt="Formalized in Lean">&nbsp;&nbsp;
+  <img src="badges/coq-formalized.svg" height="32" alt="Formalized in Coq">&nbsp;&nbsp;
+  <img src="badges/rocq-formalized.svg" height="32" alt="Formalized in Rocq">&nbsp;&nbsp;
+  <img src="badges/isabelle-formalized.svg" height="32" alt="Formalized in Isabelle">&nbsp;&nbsp;
+  <img src="badges/agda-formalized.svg" height="32" alt="Formalized in Agda">&nbsp;&nbsp;
+  <img src="badges/hol4-formalized.svg" height="32" alt="Formalized in HOL4">&nbsp;&nbsp;
+  <img src="badges/dafny-formalized.svg" height="32" alt="Formalized in Dafny">&nbsp;&nbsp;
+  <img src="badges/fstar-formalized.svg" height="32" alt="Formalized in F*">&nbsp;&nbsp;
+  <img src="badges/tla-formalized.svg" height="32" alt="Formalized in TLA+">&nbsp;&nbsp;
+  <img src="badges/idris-formalized.svg" height="32" alt="Formalized in Idris">&nbsp;&nbsp;
+  <img src="badges/pvs-formalized.svg" height="32" alt="Formalized in PVS">
 </p>
 
 ## Quick start
@@ -25,14 +41,27 @@ Inline badges for formally verified theorems in LaTeX papers. Each badge is a sm
    ```
 3. Use in theorem headers:
    ```latex
+   % fully verified proof
    \begin{theorem}[Confluence \leanproof{https://github.com/you/repo/Confluence.lean}]
      ...
    \end{theorem}
+
+   % statement formalized, proof not yet complete
+   \begin{lemma}[Diamond \leanformalized{https://github.com/you/repo/Diamond.lean}]
+     ...
+   \end{lemma}
+
+   % formalized definition
+   \begin{definition}[Widget \leanformalized{https://github.com/you/repo/Widget.lean}]
+     ...
+   \end{definition}
    ```
 
-The badge becomes a clickable hyperlink to the proof source.
+Each badge becomes a clickable hyperlink to the source.
 
 ## Available commands
+
+### Verified (green) — full proof formalized
 
 | Command | Prover |
 |---------|--------|
@@ -48,13 +77,30 @@ The badge becomes a clickable hyperlink to the proof source.
 | `\idrisproof{url}` | Idris |
 | `\pvsproof{url}` | PVS |
 
-There is also a generic command if you need a different badge file:
+### Formalized (blue) — statement/definition formalized, proof not yet
+
+| Command | Prover |
+|---------|--------|
+| `\leanformalized{url}` | Lean |
+| `\coqformalized{url}` | Coq |
+| `\rocqformalized{url}` | Rocq |
+| `\isabelleformalized{url}` | Isabelle |
+| `\agdaformalized{url}` | Agda |
+| `\holformalized{url}` | HOL4 |
+| `\dafnyformalized{url}` | Dafny |
+| `\fstarformalized{url}` | F* |
+| `\tlaformalized{url}` | TLA+ |
+| `\idrisformalized{url}` | Idris |
+| `\pvsformalized{url}` | PVS |
+
+### Generic commands
+
+For custom badge files:
 
 ```latex
-\verifiedproof[mybadge]{https://example.com/proof}
+\verifiedproof[mybadge]{https://example.com/proof}      % looks for badges/mybadge.pdf
+\formalizedstmt[mybadge]{https://example.com/statement}  % same, for formalized statements
 ```
-
-This looks for `badges/mybadge.pdf`.
 
 ## Customization
 
@@ -109,11 +155,11 @@ The SVGs work anywhere: Markdown, HTML, Typst, etc.
 ## Adding a new prover
 
 1. Add an entry to the `provers` dict in `generate.py`
-2. Run `python3 generate.py`
-3. Convert the new SVG to PDF
-4. Add a command in `verified-badges.sty`:
+2. Run `python3 generate.py` (install `cairosvg` for PDF output)
+3. Add commands in `verified-badges.sty`:
    ```latex
    \newcommand{\myproverproof}[1]{\verifiedproof[myprover]{#1}}
+   \newcommand{\myproverformalized}[1]{\formalizedstmt[myprover-formalized]{#1}}
    ```
 
 PRs welcome for additional provers.

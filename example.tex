@@ -5,6 +5,7 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
 
 \title{Example: Verified Badges}
 \author{}
@@ -28,6 +29,16 @@
 \begin{proposition}[Normalization \isabelleproof{https://github.com/example/proofs/blob/main/Normalization.thy}]
   Every well-typed term in System~F has a normal form.
 \end{proposition}
+
+\begin{definition}[Abstract reduction system \leanformalized{https://github.com/example/proofs/blob/main/ARS.lean}]
+  An \emph{abstract reduction system} is a pair $(A, \to)$ where $A$ is a set
+  and ${\to} \subseteq A \times A$.
+\end{definition}
+
+\begin{lemma}[Diamond property \leanformalized{https://github.com/example/proofs/blob/main/Diamond.lean}]
+  The diamond property implies the Church-Rosser property.
+  (Statement formalized; proof in progress.)
+\end{lemma}
 
 \begin{theorem}
   Not every result has been formally verified yet.

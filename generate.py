@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
-"""Generate verified-badge SVGs from the edited template, changing only the prover name."""
+"""Generate verified/formalized badge SVGs, changing the prover name and badge kind."""
+
+BADGE_KINDS = {
+    "verified": {
+        "label": "VERIFIED",
+        "color": "#2a6e3f",
+        "suffix": "",
+        "extra_width": 0,
+    },
+    "formalized": {
+        "label": "FORMALIZED",
+        "color": "#2a5a8f",
+        "suffix": "-formalized",
+        "extra_width": 22,  # "FORMALIZED" is wider than "VERIFIED"
+    },
+}
 
 TEMPLATE = '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
@@ -12,7 +27,7 @@ TEMPLATE = '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <g transform="translate(-4,-2)">
       <path
          d="M 17,2 30,8 V 20 C 30,29 17,36 17,36 17,36 4,29 4,20 V 8 Z"
-         fill="#2a6e3f" />
+         fill="{color}" />
       <polyline
          points="10,18 15,23 24,13"
          fill="none"
@@ -28,16 +43,16 @@ TEMPLATE = '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
          font-family="'Helvetica Neue', Arial, sans-serif"
          font-size="10.2464px"
          font-weight="600"
-         fill="#2a6e3f"
+         fill="{color}"
          letter-spacing="2"
-         style="stroke-width:1.46378">VERIFIED</text>
+         style="stroke-width:1.46378">{label}</text>
       <text
          x="34.9412"
          y="30.866396"
          font-family="Georgia, serif"
          font-size="17.1337px"
          font-weight="400"
-         fill="#2a6e3f"
+         fill="{color}"
          letter-spacing="0.5"
          style="stroke-width:1.22383">{name}</text>
     </g>
@@ -65,14 +80,24 @@ try:
 except ImportError:
     can_pdf = False
 
-for key, info in provers.items():
-    svg = TEMPLATE.format(**info)
-    with open(f"badges/{key}.svg", "w") as f:
-        f.write(svg)
-    if can_pdf:
-        cairosvg.svg2pdf(bytestring=svg.encode(), write_to=f"badges/{key}.pdf")
-    print(f"  ✓ badges/{key}.svg" + (" + .pdf" if can_pdf else "") + f"  ({info['name']})")
+count = 0
+for kind, kind_info in BADGE_KINDS.items():
+    for key, info in provers.items():
+        filename = f"{key}{kind_info['suffix']}"
+        badge_width = str(int(info["width"]) + kind_info["extra_width"])
+        svg = TEMPLATE.format(
+            name=info["name"],
+            width=badge_width,
+            color=kind_info["color"],
+            label=kind_info["label"],
+        )
+        with open(f"badges/{filename}.svg", "w") as f:
+            f.write(svg)
+        if can_pdf:
+            cairosvg.svg2pdf(bytestring=svg.encode(), write_to=f"badges/{filename}.pdf")
+        print(f"  ✓ badges/{filename}.svg" + (" + .pdf" if can_pdf else "") + f"  ({kind}: {info['name']})")
+        count += 1
 
-print(f"\nGenerated {len(provers)} badges.")
+print(f"\nGenerated {count} badges.")
 if not can_pdf:
     print("Note: install cairosvg (pip install cairosvg) to also generate PDFs.")
